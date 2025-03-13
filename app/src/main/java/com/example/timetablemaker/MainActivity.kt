@@ -206,13 +206,6 @@ fun Main(
                                 viewModel.updateDaySelected(index = originalIndex, value = !viewModel.daySelected[originalIndex])
                             }
                         }
-//                        for (i in 0..6)
-//                            CircularButton(
-//                                text = dateList[i],
-//                                isEnabled = viewModel.daySelected[i],
-//                            ) {
-//                                viewModel.updateDaySelected(index = i, value = !viewModel.daySelected[i])
-//                            }
                     }
                 }
                 /** 수업 시간 */
@@ -423,16 +416,17 @@ fun Drawing(
             val columnCount = viewModel.daySelected.count { it } + 1
             val columnProperties = remember {
                 Array(rowCount) { Array(columnCount) {
-                    mutableStateMapOf("text" to "", "subText" to "", "subTextColor" to Color.Black, "fontSize" to "15", "subFontSize" to "10", "bgColor" to Color(0xFFF2F2F2))
+//                    mutableStateMapOf("text" to "", "subText" to "", "subTextColor" to Color.Black, "fontSize" to "15", "subFontSize" to "10", "bgColor" to Color(0xFFF2F2F2))
+                    mutableStateMapOf("text" to "", "subText" to "", "subTextColor" to Color.Black, "fontSize" to "15", "subFontSize" to "10", "bgColor" to Color(0xFFFFFFFF))
                 } }
             }
 
             val trueList = mutableListOf<String>()
             for (day in adjustedDateList) {
                 val originalIndex = dateList.indexOf(day)
-                    if ( viewModel.daySelected[originalIndex] ) {
-                        trueList.add(day)
-                    }
+                if ( viewModel.daySelected[originalIndex] ) {
+                    trueList.add(day)
+                }
             }
             for (k in 1..<columnCount) {
                 columnProperties[0][k]["text"] = trueList[k-1]
@@ -483,13 +477,15 @@ fun Drawing(
             var inputSubText by remember { mutableStateOf("") }
             var inputFontSize by remember { mutableStateOf("15") }
             var inputSubFontSize by remember { mutableStateOf("10") }
-            var selectedColor by remember { mutableStateOf(Color(0xFFF2F2F2)) }
+//            var selectedColor by remember { mutableStateOf(Color(0xFFF2F2F2)) }
+            var selectedColor by remember { mutableStateOf(Color(0xFFFFFFFF)) }
 
 
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(3.dp)
-                .background(color = Color(0xFFF6F6F8))
+//                .background(color = Color(0xFFF6F6F8))
+                .background(color = Color(0xFFFFFFFF))
                 .capturable(captureController),
                 contentAlignment = Alignment.Center
             ) {
@@ -498,13 +494,15 @@ fun Drawing(
                     modifier = Modifier
                         .padding(3.dp)
                         .wrapContentSize()
-                        .background(Color(0xFFF2F2F2))
+//                        .background(Color(0xFFF2F2F2))
+                        .background(Color(0xFFFFFFFF))
                 ) {
                     Column(
                         modifier = Modifier
                             .wrapContentSize()
                             .padding(5.dp)
-                            .background(color = Color(0xFFF6F6F8))
+//                            .background(color = Color(0xFFF6F6F8))
+                            .background(color = Color(0xFFFFFFFF))
                             .border(
                                 border = BorderStroke(1.dp, Color.Black),
                                 shape = RectangleShape
@@ -594,10 +592,31 @@ fun Drawing(
                             Spacer(modifier = Modifier.height(8.dp))
                             Row {
                                 listOf(
-                                    Color(0xFFF2F2F2), // 기본
+//                                    Color(0xFFF2F2F2), // 기본
+                                    Color(0xFFFFFFFF), // 기본
                                     Color(0xFFD7D4D4), // 회색
                                     Color(0xFFFFDEDE), // 빨강
-                                    Color(0xFFDEE0FF)  // 파랑
+                                    Color(0xFFFFF2DE), // 주황
+                                    Color(0xFFFFFEDE), // 노랑
+
+                                ).forEach { color ->
+                                    Box(
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .background(color, shape = CircleShape)
+                                            .border(2.dp, if (selectedColor == color) Color.Black else Color.Transparent, shape = CircleShape)
+                                            .clickable { selectedColor = color }
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                }
+                            }
+                            Row {
+                                listOf(
+                                    Color(0xFFDEFFDF), // 초록
+                                    Color(0xFFDEF0FF), // 파랑
+                                    Color(0xFFDEE0FF), // 남
+                                    Color(0xFFF8DEFF), // 보라
+
                                 ).forEach { color ->
                                     Box(
                                         modifier = Modifier
@@ -685,7 +704,7 @@ fun Drawing(
                                     outputStream.close()
 
                                     // 저장 후 Toast나 메시지로 사용자에게 알림
-                                    Toast.makeText(context, "이미지가 저장되었습니다: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Image Saved: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
                                 } catch (error: Throwable) {
                                     print(error)
                                 }
@@ -786,7 +805,8 @@ fun TimeTableBoxColumn(
     subTextColor: Color = Color(0xFF8D8D8D),
     fontSize: TextUnit = 15.sp,
     subFontSize: TextUnit = 10.sp,
-    bgColor: Color = Color(0xFFF2F2F2),
+//    bgColor: Color = Color(0xFFF2F2F2),
+    bgColor: Color = Color(0xFFFFFFFF),
     leftWidth: Dp = 0.5.dp,
     rightWidth: Dp = 0.5.dp,
     topWidth: Dp = 0.5.dp,
@@ -795,7 +815,6 @@ fun TimeTableBoxColumn(
 ) {
     Column(
         modifier = Modifier
-//            .fillMaxHeight()
             .height(50.dp)
             .width(50.dp)
             .background(color = bgColor)
@@ -826,7 +845,6 @@ fun TimeTableBoxColumn(
                 text = subText,
                 fontSize = 12.sp,
                 color = subTextColor,
-//                color = Color(0xFF8D8D8D),
                 style = TextStyle(fontSize = subFontSize, fontFamily = FontFamily(Font(R.font.npsfont_regular))),
                 modifier = Modifier.padding(top = 4.dp)
             )
@@ -896,13 +914,3 @@ class MainViewModel : ViewModel() {
     }
 
 }
-
-
-
-
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    Main()
-//}
