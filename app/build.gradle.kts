@@ -20,6 +20,12 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("appKey/timeTableMaker.jks")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
